@@ -9,7 +9,6 @@ class Driver:
         self.driver=webdriver.Chrome(ChromeDriverManager().install())
         self.driver.set_window_position(0,0)
         self.driver.set_window_size(1920, 1024)
-        print("here")
 
     def loadurl(self,url):
         try:
