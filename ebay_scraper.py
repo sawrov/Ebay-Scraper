@@ -1,5 +1,6 @@
 from Driver import Driver
 from Colors import bcolors as color
+from selenium.webdriver.support.ui import Select
 
 class EbayScraper():
     def __init__(self,driver):
@@ -34,9 +35,16 @@ class EbayScraper():
 
     def get_variation(self):
         selector=self.driver.find_elements_by_xpath('//div[@id="test12"]//option')
+        select=Select(self.driver.find_element_by_xpath('//select[@id="msku-sel-1"]'))
+        available=[]
         for selection in selector[1:]:
-            print(selection.text)
-        print(len(selector))
+            # print(selection.text)
+            if selection.get_attribute('disabled'):
+                continue
+            available.append(selection.text)
+        for item in available:
+            select.select_by_visible_text(item)
+
 
 
 
@@ -53,6 +61,7 @@ if __name__ == '__main__':
                 ebay_object = EbayScraper(scraper.driver)
                 ebay_object.get_info()
             except:
+                raise
                 error_list.write(url)
                 print(color.FAIL+ "This URL WAS UNSUCESSFUL" + color.ENDC)
             finally:
