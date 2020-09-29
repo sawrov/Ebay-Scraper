@@ -19,7 +19,7 @@ class EbayScraper:
         print("\n\n")
         print("----------Information Extracted-------------")
         print("TITLE:" + self.title)
-        print("PRICE:" + self.base_price)
+        print("BASE PRICE:" + self.base_price)
         print("-----------sizes-available-------------")
         self.get_variation()
 
@@ -71,13 +71,17 @@ class EbayScraper:
                 if values.get_attribute('disabled'):
                     continue
                 enabled_values.append(values.text)
-            variation_dictionary[drp_down] = enabled_values
+                variation_dictionary[drp_down] = []
+            variation_dictionary[drp_down].append(enabled_values)
+            variation_dictionary[drp_down].append(name)
             print("--------------------")
         print(variation_dictionary)
         for value in variation_dictionary:
-            for items in variation_dictionary[value]:
+            print(variation_dictionary[value][1])
+            for items in variation_dictionary[value][0]:
                 value.select_by_visible_text(items)
-                print(self.get_price())
+                print(items+":"+self.get_price())
+            print("-----------------------")
             # for item in value:
             #     key.select_by_visible_text(item)
             #     print(self.get_price())
