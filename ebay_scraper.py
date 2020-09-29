@@ -61,20 +61,26 @@ class EbayScraper:
 
     def get_variation(self):
         self.get_number_of_variation()
+        variation_dictionary = dict()
         for var in self.select_variations:
             name = (var.get_attribute("name"))
             drp_down = Select(self.driver.find_element_by_name(name))
-            # print (drp_down.options)
+            # print (drp_down.name)
+            enabled_values = []
             for values in drp_down.options[1:]:
-                try:
-                    if values.get_attribute('disabled'):
-                        continue
-                    print(values.text)
-                    drp_down.select_by_visible_text(values.text)
-                    print(self.get_price())
-                except:
-                    pass
+                if values.get_attribute('disabled'):
+                    continue
+                enabled_values.append(values.text)
+            variation_dictionary[drp_down] = enabled_values
             print("--------------------")
+        print(variation_dictionary)
+        for value in variation_dictionary:
+            for items in variation_dictionary[value]:
+                value.select_by_visible_text(items)
+                print(self.get_price())
+            # for item in value:
+            #     key.select_by_visible_text(item)
+            #     print(self.get_price())
         # enumerate_variation()
         # for variation in select_variatio
         # for selection in selector[1:]:
