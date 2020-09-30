@@ -21,7 +21,7 @@ class EbayScraper:
         print("TITLE:" + self.title)
         print("BASE PRICE:" + self.base_price)
         print("-----------sizes-available-------------")
-        self.get_variation()
+        self.prepare_variations()
 
         # Uncomment  lines below after completion
 
@@ -57,11 +57,28 @@ class EbayScraper:
         finally:
             return
 
-    # def enumerate_variation(self):
+    def enumerate_variation(self, information):
+        try:
+            check = information.pop()
+        except IndexError:
+            check = False
+            # extraction_complete = True
+        if check:
+            for values in check[1]:
+                print(values)
+                check[0].select_by_visible_text(values)
+                # if
+                self.enumerate_variation(information)
+                print()
+                print("-----------------------")
+            return
+        else:
+            print(self.get_price())
+            return
 
-    def get_variation(self):
+    def prepare_variations(self):
         self.get_number_of_variation()
-        variation_dictionary = dict()
+        variation_list = []
         for var in self.select_variations:
             name = (var.get_attribute("name"))
             drp_down = Select(self.driver.find_element_by_name(name))
@@ -71,20 +88,18 @@ class EbayScraper:
                 if values.get_attribute('disabled'):
                     continue
                 enabled_values.append(values.text)
-                variation_dictionary[drp_down] = []
-            variation_dictionary[drp_down].append(enabled_values)
-            variation_dictionary[drp_down].append(name)
-            print("--------------------")
-        print(variation_dictionary)
-        for value in variation_dictionary:
-            print(variation_dictionary[value][1])
-            for items in variation_dictionary[value][0]:
-                value.select_by_visible_text(items)
-                print(items+":"+self.get_price())
-            print("-----------------------")
-            # for item in value:
-            #     key.select_by_visible_text(item)
-            #     print(self.get_price())
+            variation_list.append([drp_down, enabled_values, name])
+        self.enumerate_variation(variation_list)
+
+        # for value in variation_dictionary:
+        #     print(variation_dictionary[value][1])
+        #     for items in variation_dictionary[value][0]:
+        #         value.select_by_visible_text(items)
+        #         print(items+":"+self.get_price())
+        #     print("-----------------------")
+        # for item in value:
+        #     key.select_by_visible_text(item)
+        #     print(self.get_price())
         # enumerate_variation()
         # for variation in select_variatio
         # for selection in selector[1:]:
