@@ -45,9 +45,6 @@ class EbayScraper():
         for item in available:
             select.select_by_visible_text(item)
 
-
-
-
 if __name__ == '__main__':
     scraper = Driver()
     error_list=open("error_url.txt","a+")
