@@ -56,24 +56,30 @@ class EbayScraper:
         finally:
             return
 
-    def enumerate_variation(self, information):
-        try:
-            check = information.pop()
-        except IndexError:
-            check = False
-            # extraction_complete = True
-        if check:
-            for values in check[1]:
-                print(values)
-                check[0].select_by_visible_text(values)
-                # if
-                self.enumerate_variation(information)
-                print()
-                print("-----------------------")
-            return
+    def recursive_enumeration(self,information, depth):
+        data = information[depth]
+        if(len(information)>(depth+1)):
+            print("HERE")
+            depth=depth+1
+            for info in data[1]:
+                print("\t" +data[2] +":"+info)
+                try:
+                    data[0].select_by_visible_text(info)
+                    self.recursive_enumeration(information,depth)
+                except exceptions.NoSuchElementException:
+                    pass
+        elif(len(information)==(depth+1)):
+            data=information[depth]
+            for info in data[1]:
+                try:
+                    data[0].select_by_visible_text(info)
+                    print("\t\t"+data[2]+info+"Price :"+self.get_price())
+                except exceptions.NoSuchElementException:
+                    pass
         else:
-            print(self.get_price())
-            return
+            print("No variations Found")
+
+
 
     def prepare_variations(self):
         self.get_number_of_variation()
@@ -81,33 +87,14 @@ class EbayScraper:
         for var in self.select_variations:
             name = (var.get_attribute("name"))
             drp_down = Select(self.driver.find_element_by_name(name))
-            # print (drp_down.name)
             enabled_values = []
             for values in drp_down.options[1:]:
                 if values.get_attribute('disabled'):
                     continue
                 enabled_values.append(values.text)
             variation_list.append([drp_down, enabled_values, name])
-        self.enumerate_variation(variation_list)
+        self.recursive_enumeration(variation_list,0)
 
-        # for value in variation_dictionary:
-        #     print(variation_dictionary[value][1])
-        #     for items in variation_dictionary[value][0]:
-        #         value.select_by_visible_text(items)
-        #         print(items+":"+self.get_price())
-        #     print("-----------------------")
-        # for item in value:
-        #     key.select_by_visible_text(item)
-        #     print(self.get_price())
-        # enumerate_variation()
-        # for variation in select_variatio
-        # for selection in selector[1:]:
-        #     # print(selection.text)
-        #     if selection.get_attribute('disabled'):
-        #         continue
-        #     available.append(selection.text)
-        # for item in available:
-        #     select.select_by_visible_text(item)
 if __name__ == '__main__':
     scraper = Driver()
     error_list = open("error_url.txt", "a+")

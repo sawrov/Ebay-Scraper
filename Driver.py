@@ -8,9 +8,8 @@ from selenium.webdriver.common.by import By
 class Driver:
     def __init__(self):
         self.driver=webdriver.Chrome(ChromeDriverManager().install())
-        self.driver.set_window_position(0,0)
-        self.driver.set_window_size(1920, 1024)
-
+        # self.driver.set_window_position(0,0)
+        self.driver.maximize_window()
     def loadurl(self,url):
         try:
             self.driver.get(url)
