@@ -1,8 +1,10 @@
 from Driver import Driver
 from selenium.common import exceptions
-from Colors import bcolors as color
+# from Colors import bcolors as color
 from selenium.webdriver.support.ui import Select
-from selenium.webdriver.common.by import By
+# from selenium.webdriver.common.by import By
+import os
+import csv
 
 
 class EbayScraper:
@@ -14,12 +16,24 @@ class EbayScraper:
         self.title = self.driver.find_element_by_id('itemTitle').text
         self.shipping = self.driver.find_element_by_id('fshippingCost').text
         self.details = self.driver.find_element_by_id('viTabs_0_is').text
+        self.seller = self.driver.find_element_by_xpath("//div[@class='bdg-90']/div/a/span").text
+        self.writer=self.spreadsheet()
+
+
+    def spreadsheet(self,filename='Mother.csv'):
+        if not os.path.exists("Output"):
+            os.mkdir("Output")
+        sheet = open("Output/" + filename, "w+", encoding="utf-8")
+        csv_writer = csv.writer(sheet)
+        return csv_writer
+
 
     def get_info(self):
         print("\n\n")
         print("----------Information Extracted-------------")
         print("TITLE:" + self.title)
         print("BASE PRICE:" + self.base_price)
+        print("SELLER: "+self.seller)
         print("-----------sizes-available-------------")
         self.prepare_variations()
 
@@ -64,6 +78,7 @@ class EbayScraper:
             for info in data[1]:
                 print("\t" +data[2] +":"+info)
                 try:
+                    self.current_recursive_item=info
                     data[0].select_by_visible_text(info)
                     self.recursive_enumeration(information,depth)
                 except exceptions.NoSuchElementException:
@@ -74,6 +89,7 @@ class EbayScraper:
                 try:
                     data[0].select_by_visible_text(info)
                     print("\t\t"+data[2]+info+"Price :"+self.get_price())
+                    self.writer.writerow(["URL",self.title,self.seller,self.current_recursive_item,info,self.get_price()])
                 except exceptions.NoSuchElementException:
                     pass
         else:
