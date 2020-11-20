@@ -95,3 +95,15 @@
 [0929/153603.043:ERROR:exception_snapshot_win.cc(99)] thread ID 24748 not found in process
 [0929/153603.045:ERROR:process_reader_win.cc(123)] NtOpenThread: {Access Denied} A process has requested access to an object, but has not been granted those access rights. (0xc0000022)
 [0929/153603.045:ERROR:exception_snapshot_win.cc(99)] thread ID 21772 not found in process
+[1107/001230.563:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[1120/102637.930:ERROR:filesystem_win.cc(129)] GetFileAttributes C:\Users\intmain\AppData\Local\Temp\scoped_dir31932_961711067\Crashpad\attachments\2bf468e1-6fad-4fbe-bf3a-e6ae266681a4: The system cannot find the path specified. (0x3)
+[1120/103027.134:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[1120/104049.481:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[1120/104157.222:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[1120/104602.381:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[1120/104638.389:ERROR:process_info.cc(329)] VirtualQueryEx: Access is denied. (0x5)
+[1120/104638.390:ERROR:process_info.cc(556)] ReadMemoryInfo failed
+[1120/104638.390:ERROR:process_memory_win.cc(39)] Failed to initialize ProcessInfo.
+[1120/104638.390:ERROR:scoped_process_suspend.cc(40)] NtResumeProcess: An attempt was made to access an exiting process. (0xc000010a)
+[1120/110156.527:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[1120/111448.760:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
